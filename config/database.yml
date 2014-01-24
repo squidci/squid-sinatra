@@ -1,0 +1,17 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  host: localhost
+  database: ci_development
+  pool: 25
+  pool_timeout: 360
+  connect_timeout: 360
+
+test:
+  adapter: postgresql
+  encoding: utf8
+  host: localhost
+  database: ci_test
+  pool: 25
+  pool_timeout: 360
+  connect_timeout: 360
