@@ -1,10 +1,10 @@
 require 'spec_helper'
 require_relative '../../lib/api'
 
-describe CI::Api do
+describe Squid::Api do
 
   def app
-    CI::Api
+    Squid::Api
   end
 
   describe 'POST /test-suite-started' do
