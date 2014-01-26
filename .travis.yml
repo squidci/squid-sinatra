@@ -1,4 +1,7 @@
 language: "ruby"
+before_script:
+  - psql -c 'create database squid_test;' -U postgres
+  - bundle exec rake db:migrate RACK_ENV=test
 script: "bundle exec rake --trace"
 rvm:
   - 2.1.0
