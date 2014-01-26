@@ -26,4 +26,6 @@ RSpec.configure do |config|
       end
     end
   end
+
+  config.order = 'random'
 end
