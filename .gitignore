@@ -1,2 +1,3 @@
 .bundle
 coverage
+config/database.yml
