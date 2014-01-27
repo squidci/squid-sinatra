@@ -32,6 +32,8 @@ GEM
     minitest (4.7.5)
     multi_json (1.8.4)
     pg (0.17.1)
+    puma (2.7.1)
+      rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-protection (1.5.1)
       rack
@@ -75,6 +77,7 @@ PLATFORMS
 DEPENDENCIES
   coveralls
   pg
+  puma
   rack-test
   rake
   rspec
