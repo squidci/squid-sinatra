@@ -4,7 +4,7 @@ development:
   host: localhost
   username: postgres
   database: squid_development
-  pool: 25
+  pool: 16
   pool_timeout: 360
   connect_timeout: 360
 
@@ -14,6 +14,6 @@ test:
   host: localhost
   username: postgres
   database: squid_test
-  pool: 25
+  pool: 16
   pool_timeout: 360
   connect_timeout: 360
