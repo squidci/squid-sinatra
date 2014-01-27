@@ -4,8 +4,6 @@ require 'sinatra/activerecord'
 require_relative 'models/build'
 require_relative 'models/test'
 
-require_relative '../setup'
-
 module Squid
   class Api < Sinatra::Base
 
