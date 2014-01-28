@@ -1,4 +1,4 @@
-.bundle
-vendor
-coverage
-config/database.yml
+/.bundle
+/vendor
+/coverage
+/config/database.yml
