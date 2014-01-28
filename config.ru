@@ -1,6 +1,8 @@
+require './setup'
+require './lib/app'
 require './lib/api'
-require_relative 'setup'
 
 run Rack::URLMap.new(
+  '/'    => Squid::App.new,
   '/api' => Squid::Api.new
 )

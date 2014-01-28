@@ -8,8 +8,9 @@ module Squid
   class Api < Sinatra::Base
 
     register Sinatra::ActiveRecordExtension
-
     set :database_file, '../config/database.yml'
+
+    set :root, File.expand_path('../..', __FILE__)
 
     before do
       @json = parse_json_input
