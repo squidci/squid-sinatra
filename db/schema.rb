@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140112171809) do
+ActiveRecord::Schema.define(version: 20140129203221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "builds", force: true do |t|
+  create_table "test_suites", force: true do |t|
     t.integer  "build_id"
     t.integer  "passed_count",  default: 0, null: false
     t.integer  "failed_count",  default: 0, null: false
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20140112171809) do
     t.datetime "updated_at"
   end
 
-  add_index "builds", ["build_id"], name: "index_builds_on_build_id", unique: true, using: :btree
+  add_index "test_suites", ["build_id", "started_at"], name: "index_test_suites_on_build_id_and_started_at", using: :btree
 
   create_table "tests", force: true do |t|
     t.integer  "build_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20140112171809) do
     t.float    "runtime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "test_suite_started_at"
   end
 
   add_index "tests", ["build_id"], name: "index_tests_on_build_id", using: :btree

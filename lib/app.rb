@@ -1,8 +1,9 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
 
-require_relative 'models/build'
+require_relative 'models/test_suite'
 require_relative 'models/test'
+require_relative 'models/build'
 
 module Squid
   class App < Sinatra::Base
@@ -13,7 +14,9 @@ module Squid
     set :root, File.expand_path('../..', __FILE__)
 
     get '/' do
-      @builds = Build.recent.take(5)
+      recent_build_ids = TestSuite.recent_build_ids.take(4)
+      test_suites = TestSuite.where(build_id: recent_build_ids).all
+      @builds = Build.from_test_suites(test_suites)
       erb :index
     end
 

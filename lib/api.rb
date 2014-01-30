@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
 
-require_relative 'models/build'
+require_relative 'models/test_suite'
 require_relative 'models/test'
 
 module Squid
@@ -18,19 +18,19 @@ module Squid
     end
 
     post '/test-suite-started' do
-      upsert_build @build_id, @json.merge(status: 'started')
+      create_test_suite @json.merge(status: 'started')
       200
     end
 
     post '/test-suite-finished' do
-      upsert_build @build_id, @json
+      update_test_suite @json
       200
     end
 
     post '/test-passed' do
       database.transaction do
         create_test @json.merge(status: 'passed')
-        increment_build @build_id, :passed_count
+        increment_test_suite :passed_count
       end
 
       200
@@ -39,7 +39,7 @@ module Squid
     post '/test-failed' do
       database.transaction do
         create_test @json.merge(status: 'failed')
-        increment_build @build_id, :failed_count
+        increment_test_suite :failed_count
       end
 
       200
@@ -48,7 +48,7 @@ module Squid
     post '/test-pending' do
       database.transaction do
         create_test @json.merge(status: 'pending')
-        increment_build @build_id, :pending_count
+        increment_test_suite :pending_count
       end
 
       200
@@ -60,14 +60,37 @@ module Squid
         Test.create(data)
       end
 
-      def upsert_build(build_id, data)
-        build = Build.where(build_id: build_id).first_or_initialize
-        build.update_attributes(data)
+      def create_test_suite(data)
+        TestSuite.create(data)
       end
 
-      def increment_build(build_id, attribute)
-        build = Build.where(build_id: build_id).first
-        Build.increment_counter(attribute , build.id) if build
+      def update_test_suite(data)
+        started_at = data['started_at']
+        test_suite = TestSuite.where(build_id: @build_id, started_at: started_at).first
+
+        if test_suite
+          if test_suite.update(data)
+            puts "Updated TestSuite with ID #{@build_id} started at #{started_at}"
+          else
+            puts "Failed to update TestSuite with ID #{@build_id} started at #{started_at}"
+          end
+        else
+          puts "Failed to find TestSuite to update with ID #{@build_id} started at #{started_at}"
+        end
+      end
+
+      def increment_test_suite(attribute)
+        started_at = @json['test_suite_started_at']
+        test_suite = TestSuite.where(build_id: @build_id, started_at: started_at).first
+
+        if test_suite
+          counters = { attribute => 1, :total_count => 1 }
+          TestSuite.update_counters(test_suite.id, counters)
+
+          puts "Incremented :#{attribute} for TestSuite with ID #{@build_id} started at #{started_at}"
+        else
+          puts "Failed to find TestSuite with ID #{@build_id} started at #{started_at} to increment :#{attribute}"
+        end
       end
 
       def parse_json_input
