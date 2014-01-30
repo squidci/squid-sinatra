@@ -1,5 +1,7 @@
+<h1>Recent <%= @builds.count %> builds</h1>
+
 <ol>
   <% for build in @builds %>
-    <li><%= build.build_id %></li>
+    <li><%= 'ID ' + build.id.to_s + ': - passed: ' + build.passed_count.to_s + ' status: ' + build.status.to_s %></li>
   <% end %>
 </ol>

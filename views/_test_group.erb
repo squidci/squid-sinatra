@@ -1,0 +1,12 @@
+<% for key, value in group %>
+<li>
+  <p><%= key %></p>
+  <% if value.is_a? Hash  %>
+    <ol>
+      <%= partial(:test_group, locals: { group: value }) %>
+    </ol>
+  <% else  %>
+    <%#<p><%= value.id </p>%>
+  <% end  %>
+</li>
+ <% end %>
